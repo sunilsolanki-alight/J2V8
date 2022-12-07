@@ -893,7 +893,7 @@ public class V8 extends V8Object {
         return invalid;
     }
 
-    protected void disposeMethodID(final long methodID) {
+    public void disposeMethodID(final long methodID) {
         functionRegistry.remove(methodID);
     }
 
