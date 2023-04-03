@@ -849,25 +849,28 @@ public class V8 extends V8Object {
         }
     }
 
-    void registerCallback(final Object object, final Method method, final long objectHandle, final String jsFunctionName, final boolean includeReceiver) {
+    public long registerCallback(final Object object, final Method method, final long objectHandle, final String jsFunctionName, final boolean includeReceiver) {
         MethodDescriptor methodDescriptor = new MethodDescriptor();
         methodDescriptor.object = object;
         methodDescriptor.method = method;
         methodDescriptor.includeReceiver = includeReceiver;
         long methodID = registerJavaMethod(getV8RuntimePtr(), objectHandle, jsFunctionName, isVoidMethod(method));
         functionRegistry.put(methodID, methodDescriptor);
+        return methodID;
     }
 
-    void registerVoidCallback(final JavaVoidCallback callback, final long objectHandle, final String jsFunctionName) {
+    public long registerVoidCallback(final JavaVoidCallback callback, final long objectHandle, final String jsFunctionName) {
         MethodDescriptor methodDescriptor = new MethodDescriptor();
         methodDescriptor.voidCallback = callback;
         long methodID = registerJavaMethod(getV8RuntimePtr(), objectHandle, jsFunctionName, true);
         functionRegistry.put(methodID, methodDescriptor);
+        return methodID;
     }
 
-    void registerCallback(final JavaCallback callback, final long objectHandle, final String jsFunctionName) {
+    public long registerCallback(final JavaCallback callback, final long objectHandle, final String jsFunctionName) {
         long methodID = registerJavaMethod(getV8RuntimePtr(), objectHandle, jsFunctionName, false);
         createAndRegisterMethodDescriptor(callback, methodID);
+        return methodID;
     }
 
     void createAndRegisterMethodDescriptor(final JavaCallback callback, final long methodID) {
