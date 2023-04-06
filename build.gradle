@@ -1,4 +1,5 @@
-apply plugin: 'maven'
+apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
 group = 'com.eclipsesource.j2v8'
@@ -8,12 +9,6 @@ version = System.getenv('J2V8_FULL_VERSION')
 ext."signing.secretKeyRingFile" = '/.gnupg/secring.gpg'
 ext."signing.password" = System.getenv("KEYSTORE_PASSWORD")
 ext."signing.keyId" = System.getenv("KEY_ID")
-
-configurations {
-    archives {
-        extendsFrom configurations.default
-    }
-}
 
 buildscript {
     repositories {
@@ -25,7 +20,6 @@ buildscript {
     }
 }
 
-apply plugin: 'com.android.library'
 apply plugin: 'spoon'
 
 repositories {
@@ -85,53 +79,10 @@ spoon {
     }
 }
 
-signing {
-    // required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
-
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: System.getenv("MAVEN_REPO_USER"), password: System.getenv("MAVEN_REPO_PASS") )
-      }
-
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: System.getenv("MAVEN_REPO_USER"), password: System.getenv("MAVEN_REPO_PASS") )
-      }
-
-      pom.project {
-	    name 'j2v8'
-	    packaging 'aar'
-	    description 'J2V8 is a set of Java bindings for V8'
-	    url 'https://github.com/eclipsesource/j2v8'
-
-	    scm {
-		url 'scm:git:git@github.com:eclipsesource/J2V8.git'
-		connection 'scm:git:git@github.com:eclipsesource/J2V8.git'
-		developerConnection 'scm:git:git@github.com:eclipsesource/J2V8.git'
-	    }
-
-	    licenses {
-		license {
-		    name 'Eclipse Public License - v 1.0'
-		    url 'https://www.eclipse.org/legal/epl-v10.html'
-		    distribution 'repo'
-		}
-	    }
-
-	    developers {
-		developer {
-		    id 'irbull'
-		    name 'R. Ian Bull'
-		    email 'irbull@eclipsesource.com'
-		}
-	    }
-
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact("$buildDir/outputs/aar/j2v8-release.aar")
         }
-      }
     }
-  }
+}
