@@ -12,10 +12,11 @@ ext."signing.keyId" = System.getenv("KEY_ID")
 
 buildscript {
     repositories {
-        jcenter()
+        google()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:8.7.3'
         classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.2.2'
     }
 }
@@ -23,30 +24,36 @@ buildscript {
 apply plugin: 'spoon'
 
 repositories {
-    jcenter()
+    google()
+    mavenCentral()
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    //testCompile 'org.mockito:mockito-all:2.6.3'
-    testCompile 'org.mockito:mockito-core:2.6.3'
+    testImplementation 'junit:junit:4.13.2'
+    //testImplementation 'org.mockito:mockito-all:2.6.3'
+    testImplementation 'org.mockito:mockito-core:4.11.0'
 
-    androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'org.mockito:mockito-android:2.6.3' // https://jeroenmols.com/blog/2017/01/17/mockitoandroid/
-    androidTestCompile 'com.android.support:support-annotations:24.0.0'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'org.mockito:mockito-android:4.11.0' // https://jeroenmols.com/blog/2017/01/17/mockitoandroid/
+    androidTestImplementation 'androidx.annotation:annotation:1.9.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
+    androidTestImplementation 'androidx.test:rules:1.6.1'
 }
 
 android {
-    compileSdkVersion 10
-    buildToolsVersion '24.0.3'
-
+    namespace 'com.eclipsesource.v8'
+    compileSdk 35
+    
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 10
+        minSdkVersion 21
+        targetSdkVersion 35
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     lintOptions {
