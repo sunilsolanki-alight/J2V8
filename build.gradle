@@ -89,7 +89,7 @@ spoon {
 publishing {
     publications {
         maven(MavenPublication) {
-            artifact("$buildDir/outputs/aar/j2v8-release.aar")
+            from components.release
         }
     }
 }
