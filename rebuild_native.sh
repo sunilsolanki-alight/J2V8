@@ -26,7 +26,9 @@ if [ -d "v8.out" ]; then
     echo "✅ V8 libraries found:"
     find v8.out -name "*.a" | sort
 else
-    curl -L https://download.eclipsesource.com/j2v8/v8/libv8_9.3.345.11_monolith.zip -o libv8.zip && unzip libv8.zip -d v8.out
+    # Taken from https://download.eclipsesource.com/j2v8/v8/libv8_9.3.345.11_monolith.zip
+    # Added to VCS in case the link breaks
+    unzip v8_monolith/libv8_9.3.345.11_monolith.zip -d v8.out
 fi
 
 # API level
