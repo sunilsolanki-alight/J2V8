@@ -76,22 +76,22 @@ build_arch() {
     # Generate JNI header if needed
     if [ ! -f "jni/com_eclipsesource_v8_V8Impl.h" ]; then
         echo "Generating JNI headers..."
-        if [ -d "build/intermediates/javac/debug/classes" ]; then
-            javah -cp build/intermediates/javac/debug/classes -o jni com.eclipsesource.v8.V8Impl || echo "Warning: Could not generate JNI headers"
+        if [ -d "build/intermediates/javac/release/classes" ]; then
+            javah -cp build/intermediates/javac/release/classes -o jni com.eclipsesource.v8.V8Impl || echo "Warning: Could not generate JNI headers"
         else
             echo "Warning: Java classes not found, using existing JNI headers"
         fi
     fi
     
-    # Compile flags
+    # Compile flags with release optimizations
     local CPPFLAGS="-I$ANDROID_NDK_HOME/sysroot/usr/include"
     CPPFLAGS="$CPPFLAGS -I$ANDROID_NDK_HOME/sysroot/usr/include/$ndk_arch"
     CPPFLAGS="$CPPFLAGS -Iv8.out/include"
     CPPFLAGS="$CPPFLAGS -Ijni"
-    CPPFLAGS="$CPPFLAGS -fPIC -std=c++17"
+    CPPFLAGS="$CPPFLAGS -fPIC -std=c++17 -O3 -DNDEBUG"
     
-    # Link flags with 16KB alignment for Google Play compliance
-    local LDFLAGS="-shared -llog"
+    # Link flags with 16KB alignment for Google Play compliance and symbol stripping
+    local LDFLAGS="-shared -llog -s"
     LDFLAGS="$LDFLAGS -Wl,-z,max-page-size=16384"
     LDFLAGS="$LDFLAGS -Wl,-z,common-page-size=16384"
     
