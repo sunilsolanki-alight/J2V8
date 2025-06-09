@@ -86,10 +86,12 @@ spoon {
     }
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.release
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                artifact bundleReleaseAar
+            }
         }
     }
 }
