@@ -31,7 +31,6 @@ else
     unzip v8_monolith/libv8_9.3.345.11_monolith.zip -d v8.out
 fi
 
-# API level
 API_LEVEL=21
 
 # Function to build for a specific architecture
@@ -42,14 +41,6 @@ build_arch() {
     
     echo ""
     echo "Building for $android_abi ($v8_arch)..."
-    
-    # Check if V8 library exists
-    local v8_lib="v8.out/$v8_arch/libv8_monolith.a"
-    if [ ! -f "$v8_lib" ]; then
-        echo "ERROR: V8 library not found: $v8_lib"
-        echo "Please ensure V8 libraries are extracted to v8.out/"
-        return 1
-    fi
     
     # Set up compiler paths
     local TOOLCHAIN="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-x86_64"

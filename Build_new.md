@@ -11,8 +11,7 @@
 **Set environment variable**
 ```bash
 # Add to ~/.zshrc or ~/.bash_profile
-export ANDROID_NDK_HOME=~/Library/Android/sdk/ndk/[version]
-# Example: export ANDROID_NDK_HOME=~/Library/Android/sdk/ndk/25.2.9519653
+export ANDROID_NDK_HOME=~/Library/Android/sdk/ndk-bundle
 
 # Reload shell
 source ~/.zshrc
