@@ -38,7 +38,9 @@ build_arch() {
     local android_abi=$1
     local v8_arch=$2
     local ndk_arch=$3
-    
+    # Set V8 library path for this architecture
+    local v8_lib="v8.out/$v8_arch/libv8_monolith.a"
+
     echo ""
     echo "Building for $android_abi ($v8_arch)..."
     
@@ -85,6 +87,8 @@ build_arch() {
     local LDFLAGS="-shared -llog -s"
     LDFLAGS="$LDFLAGS -Wl,-z,max-page-size=16384"
     LDFLAGS="$LDFLAGS -Wl,-z,common-page-size=16384"
+    # Static link C++ standard library to avoid libc++_shared.so dependency
+    LDFLAGS="$LDFLAGS -static-libstdc++"
     
     # Output directly to src/main/jniLibs (replace existing files under version control)
     local OUTPUT="src/main/jniLibs/$android_abi/libj2v8.so"
